@@ -1,6 +1,23 @@
 import { Badge } from "@/components/ui/badge"
 import { motion } from "framer-motion"
 import { BookingForm } from "@/components/blocks/booking-form"
+import { Suspense } from "react"
+import { Card } from "@/components/ui/card"
+
+function LoadingCard() {
+  return (
+    <Card className="p-6 backdrop-blur-lg bg-white/30 dark:bg-slate-900/30 border-none shadow-lg">
+      <div className="animate-pulse space-y-4">
+        <div className="h-4 bg-blue-200 rounded w-1/4"></div>
+        <div className="h-10 bg-blue-200 rounded"></div>
+        <div className="h-4 bg-blue-200 rounded w-1/3"></div>
+        <div className="h-10 bg-blue-200 rounded"></div>
+        <div className="h-4 bg-blue-200 rounded w-1/2"></div>
+        <div className="h-10 bg-blue-200 rounded"></div>
+      </div>
+    </Card>
+  )
+}
 
 export default function IndexPage() {
   return (
@@ -55,7 +72,27 @@ export default function IndexPage() {
           className="max-w-2xl mx-auto"
         >
           <h2 className="text-2xl font-bold text-center mb-8 text-gray-800 dark:text-gray-100">Book an Appointment</h2>
-          <BookingForm />
+          <Suspense fallback={<LoadingCard />}>
+            <BookingForm />
+          </Suspense>
+        </motion.section>
+
+        {/* Contact Information */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="text-center"
+        >
+          <div className="p-6 rounded-lg backdrop-blur-lg bg-white/30 dark:bg-slate-900/30 border-none shadow-lg max-w-xl mx-auto">
+            <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4">Need Immediate Assistance?</h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-4">
+              For emergency situations or immediate support, please contact our 24/7 hotline:
+            </p>
+            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              1-800-VET-CARE
+            </p>
+          </div>
         </motion.section>
       </div>
     </div>
