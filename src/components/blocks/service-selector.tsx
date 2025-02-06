@@ -1,52 +1,66 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card } from "@/components/ui/card"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
 
 interface ServiceSelectorProps {
-  onSelect: (serviceId: string) => void;
+  onSelect: (serviceId: string) => void
 }
 
 const SERVICES = [
-  // Equine Services
-  { id: "eq-gen", name: "Medicina General Equina", price: 80 },
-  { id: "eq-sport", name: "Medicina Esportiva Equina", price: 120 },
-  { id: "eq-dent", name: "Odontologia Equina", price: 90 },
-  { id: "eq-repro", name: "Reproducció Equina", price: 150 },
-  { id: "eq-surg", name: "Cirurgia Equina", price: 500 },
-  { id: "eq-rehab", name: "Rehabilitació Equina", price: 100 },
-  { id: "eq-prev", name: "Medicina Preventiva Equina", price: 70 },
-  
-  // Small Animal Services
-  { id: "sa-gen", name: "Medicina General", price: 50 },
-  { id: "sa-surg", name: "Cirurgia General", price: 200 },
-  { id: "sa-dent", name: "Odontologia", price: 80 },
-  { id: "sa-prev", name: "Medicina Preventiva", price: 45 },
-  { id: "sa-emerg", name: "Urgències", price: 120 },
-];
+  {
+    id: "equine-general",
+    name: "Medicina General Equina",
+    description: "Examen complet i diagnòstic general",
+    price: "80€"
+  },
+  {
+    id: "equine-sports",
+    name: "Medicina Esportiva Equina",
+    description: "Avaluació i tractament per a cavalls esportius",
+    price: "120€"
+  },
+  {
+    id: "equine-dental",
+    name: "Odontologia Equina",
+    description: "Cura dental completa i manteniment",
+    price: "90€"
+  },
+  {
+    id: "general-medicine",
+    name: "Medicina General",
+    description: "Consulta i examen general per a altres animals",
+    price: "50€"
+  },
+  {
+    id: "emergency",
+    name: "Urgències",
+    description: "Atenció immediata per a casos urgents",
+    price: "120€"
+  }
+]
 
 export function ServiceSelector({ onSelect }: ServiceSelectorProps) {
   return (
-    <Select onValueChange={onSelect}>
-      <SelectTrigger>
-        <SelectValue placeholder="Selecciona el servei" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="header-eq" disabled className="font-semibold text-primary">
-          Serveis Equins
-        </SelectItem>
-        {SERVICES.filter(service => service.id.startsWith('eq-')).map((service) => (
-          <SelectItem key={service.id} value={service.id}>
-            {service.name} ({service.price}€)
-          </SelectItem>
+    <Card className="p-4">
+      <RadioGroup onValueChange={onSelect} className="space-y-3">
+        {SERVICES.map((service) => (
+          <div key={service.id} className="flex items-start space-x-3 space-y-0">
+            <RadioGroupItem value={service.id} id={service.id} />
+            <Label
+              htmlFor={service.id}
+              className="grid gap-1 font-normal cursor-pointer"
+            >
+              <div className="font-medium">{service.name}</div>
+              <div className="text-sm text-muted-foreground">
+                {service.description}
+              </div>
+              <div className="text-sm font-medium text-primary">
+                {service.price}
+              </div>
+            </Label>
+          </div>
         ))}
-        
-        <SelectItem value="header-sa" disabled className="font-semibold text-primary mt-2">
-          Altres Animals
-        </SelectItem>
-        {SERVICES.filter(service => service.id.startsWith('sa-')).map((service) => (
-          <SelectItem key={service.id} value={service.id}>
-            {service.name} ({service.price}€)
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  );
+      </RadioGroup>
+    </Card>
+  )
 }
