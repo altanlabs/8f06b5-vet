@@ -2,6 +2,14 @@
   @apply bg-background border border-border rounded-lg shadow-lg !important;
 }
 
+.react-datepicker-wrapper {
+  @apply w-full !important;
+}
+
+.react-datepicker-popper {
+  @apply !transform-none !translate-x-0 !inset-auto !left-1/2 !-translate-x-1/2 !important;
+}
+
 .react-datepicker__header {
   @apply bg-muted border-border !important;
 }
@@ -44,4 +52,17 @@
 
 .react-datepicker__triangle {
   @apply hidden !important;
+}
+
+@media (max-width: 640px) {
+  .react-datepicker {
+    @apply !left-1/2 !transform !-translate-x-1/2 !important;
+  }
+  .react-datepicker-popper {
+    @apply !left-1/2 !transform !-translate-x-1/2 !w-auto !important;
+    position: fixed !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 1000 !important;
+  }
 }
