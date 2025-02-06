@@ -5,7 +5,7 @@ import { BookingForm } from "@/components/blocks/booking-form"
 export default function IndexPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-slate-900">
-      <div className="container mx-auto px-4 py-16 space-y-16">
+      <div className="container mx-auto px-4 py-8 md:py-16 space-y-12">
         {/* Hero Section */}
         <motion.section 
           className="text-center space-y-6"
@@ -14,33 +14,23 @@ export default function IndexPage() {
           transition={{ duration: 0.8 }}
         >
           <Badge variant="secondary" className="mb-4 bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-100">
-            Veterinary Services
+            Book Your Pet Care
           </Badge>
-          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
+          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
             Professional Pet Care
             <br />
             At Your Doorstep
           </h1>
           <p className="mx-auto max-w-[700px] text-gray-600 md:text-xl dark:text-gray-300">
-            Book veterinary services for your beloved pets with ease. Choose between scheduled visits in service areas or urgent care with travel options.
+            Schedule veterinary services for your beloved pets with ease. Choose between regular visits in service areas or urgent care with travel options.
           </p>
-        </motion.section>
-
-        {/* Booking Section */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="max-w-2xl mx-auto"
-        >
-          <BookingForm />
         </motion.section>
 
         {/* Features Section */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
           className="grid md:grid-cols-3 gap-8 text-center"
         >
           <div className="p-6 rounded-lg backdrop-blur-lg bg-white/30 dark:bg-slate-900/30 border-none shadow-lg">
@@ -55,6 +45,17 @@ export default function IndexPage() {
             <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-2">Easy Booking</h3>
             <p className="text-gray-600 dark:text-gray-300">Simple online booking system with real-time availability in your area.</p>
           </div>
+        </motion.section>
+
+        {/* Booking Form Section */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="max-w-2xl mx-auto"
+        >
+          <h2 className="text-2xl font-bold text-center mb-8 text-gray-800 dark:text-gray-100">Book an Appointment</h2>
+          <BookingForm />
         </motion.section>
       </div>
     </div>
