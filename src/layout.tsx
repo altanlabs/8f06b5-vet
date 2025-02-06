@@ -1,7 +1,7 @@
 import { Outlet, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { SunIcon, MoonIcon } from "lucide-react";
-import { useTheme } from "./theme/theme-provider"; // Fixed import path
+import { useTheme } from "@/theme/use-theme"; // Fixed import path
 
 interface NavItem {
   label: string;
