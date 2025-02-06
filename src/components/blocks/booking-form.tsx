@@ -20,6 +20,7 @@ export function BookingForm() {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>()
   const [petName, setPetName] = useState('')
   const [petType, setPetType] = useState('')
+  const [otherPetType, setOtherPetType] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   
   const { addRecord } = useDatabase('appointments')
@@ -34,7 +35,7 @@ export function BookingForm() {
       // First create the pet record
       const petResponse = await addPet({
         pet_name: petName,
-        species: petType
+        species: petType === 'other' ? otherPetType : petType
       })
       
       // Then create the appointment
@@ -57,6 +58,7 @@ export function BookingForm() {
         setSelectedTimeSlot(undefined)
         setPetName('')
         setPetType('')
+        setOtherPetType('')
       }
     } catch (error) {
       toast.error('Error en reservar la cita. Si us plau, torna-ho a provar.')
@@ -111,12 +113,19 @@ export function BookingForm() {
               <SelectValue placeholder="Tipus d'animal" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="horse">Cavall</SelectItem>
-              <SelectItem value="dog">Gos</SelectItem>
-              <SelectItem value="cat">Gat</SelectItem>
-              <SelectItem value="other">Altres</SelectItem>
+              <SelectItem value="cavall">Cavall</SelectItem>
+              <SelectItem value="gos">Gos</SelectItem>
+              <SelectItem value="gat">Gat</SelectItem>
+              <SelectItem value="other">Altre</SelectItem>
             </SelectContent>
           </Select>
+          {petType === 'other' && (
+            <Input 
+              placeholder="Especifica el tipus d'animal" 
+              value={otherPetType}
+              onChange={(e) => setOtherPetType(e.target.value)}
+            />
+          )}
         </div>
 
         <div className="space-y-4">
@@ -140,7 +149,8 @@ export function BookingForm() {
         <Button 
           type="submit" 
           className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-          disabled={!date || !selectedAreaId || !selectedServiceId || !selectedTimeSlot || !petName || !petType || isSubmitting}
+          disabled={!date || !selectedAreaId || !selectedServiceId || !selectedTimeSlot || !petName || 
+                   !petType || (petType === 'other' && !otherPetType) || isSubmitting}
         >
           {isSubmitting ? 'Reservant...' : 'Reservar Cita'}
         </Button>
