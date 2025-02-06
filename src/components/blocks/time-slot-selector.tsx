@@ -9,7 +9,7 @@ interface TimeSlotSelectorProps {
 }
 
 export function TimeSlotSelector({ onSelect, selectedDate, selectedAreaId }: TimeSlotSelectorProps) {
-  const { records, isLoading, refresh } = useDatabase("veterinarian_availability", {
+  const { records = [], isLoading, refresh } = useDatabase("veterinarian_availability", {
     filters: selectedDate ? [
       { 
         field: "available_date", 
@@ -27,19 +27,9 @@ export function TimeSlotSelector({ onSelect, selectedDate, selectedAreaId }: Tim
   }, [selectedDate]);
 
   if (!selectedDate || !selectedAreaId) return null;
-  
-  if (isLoading) {
-    return (
-      <Select>
-        <SelectTrigger>
-          <SelectValue placeholder="Loading time slots..." />
-        </SelectTrigger>
-      </Select>
-    );
-  }
 
-  const timeSlots = records.map(record => {
-    const time = new Date(record.fields.available_time);
+  const timeSlots = records?.map(record => {
+    const time = new Date(record.fields?.available_time);
     return {
       id: record.id,
       time: time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -47,12 +37,12 @@ export function TimeSlotSelector({ onSelect, selectedDate, selectedAreaId }: Tim
   });
 
   return (
-    <Select onValueChange={onSelect}>
+    <Select onValueChange={onSelect} disabled={isLoading}>
       <SelectTrigger>
-        <SelectValue placeholder="Select time" />
+        <SelectValue placeholder={isLoading ? "Loading time slots..." : "Select time"} />
       </SelectTrigger>
       <SelectContent>
-        {timeSlots.map((slot) => (
+        {timeSlots?.map((slot) => (
           <SelectItem key={slot.id} value={slot.id}>
             {slot.time}
           </SelectItem>
