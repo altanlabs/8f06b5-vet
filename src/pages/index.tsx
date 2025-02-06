@@ -3,6 +3,8 @@ import { motion } from "framer-motion"
 import { BookingForm } from "@/components/blocks/booking-form"
 import { Suspense } from "react"
 import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { WhatsappLogo } from 'phosphor-react'
 
 function LoadingCard() {
   return (
@@ -20,6 +22,10 @@ function LoadingCard() {
 }
 
 export default function IndexPage() {
+  const handleWhatsAppClick = () => {
+    window.open('https://wa.me/34660428065', '_blank');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-slate-900">
       <div className="container mx-auto px-4 py-8 md:py-16 space-y-12">
@@ -31,15 +37,15 @@ export default function IndexPage() {
           transition={{ duration: 0.8 }}
         >
           <Badge variant="secondary" className="mb-4 bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-100">
-            Book Your Pet Care
+            Reserva la teva cita veterinària
           </Badge>
           <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
-            Professional Pet Care
+            Cura Professional
             <br />
-            At Your Doorstep
+            per a les teves Mascotes
           </h1>
           <p className="mx-auto max-w-[700px] text-gray-600 md:text-xl dark:text-gray-300">
-            Schedule veterinary services for your beloved pets with ease. Choose between regular visits in service areas or urgent care with travel options.
+            Programa serveis veterinaris per als teus animals de companyia amb facilitat. Tria entre visites regulars a les zones de servei o atenció urgent amb opcions de desplaçament.
           </p>
         </motion.section>
 
@@ -51,16 +57,16 @@ export default function IndexPage() {
           className="grid md:grid-cols-3 gap-8 text-center"
         >
           <div className="p-6 rounded-lg backdrop-blur-lg bg-white/30 dark:bg-slate-900/30 border-none shadow-lg">
-            <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-2">Scheduled Visits</h3>
-            <p className="text-gray-600 dark:text-gray-300">Book regular check-ups and treatments in our service areas with no travel fee.</p>
+            <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-2">Visites Programades</h3>
+            <p className="text-gray-600 dark:text-gray-300">Reserva revisions i tractaments regulars a les nostres zones de servei sense cost de desplaçament.</p>
           </div>
           <div className="p-6 rounded-lg backdrop-blur-lg bg-white/30 dark:bg-slate-900/30 border-none shadow-lg">
-            <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-2">Urgent Care</h3>
-            <p className="text-gray-600 dark:text-gray-300">24/7 emergency services available with additional travel fee for your pet's urgent needs.</p>
+            <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-2">Atenció Urgent</h3>
+            <p className="text-gray-600 dark:text-gray-300">Serveis d'emergència 24/7 disponibles amb taxa de desplaçament addicional per a les necessitats urgents de la teva mascota.</p>
           </div>
           <div className="p-6 rounded-lg backdrop-blur-lg bg-white/30 dark:bg-slate-900/30 border-none shadow-lg">
-            <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-2">Easy Booking</h3>
-            <p className="text-gray-600 dark:text-gray-300">Simple online booking system with real-time availability in your area.</p>
+            <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-2">Reserva Fàcil</h3>
+            <p className="text-gray-600 dark:text-gray-300">Sistema de reserva en línia senzill amb disponibilitat en temps real a la teva zona.</p>
           </div>
         </motion.section>
 
@@ -71,7 +77,7 @@ export default function IndexPage() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="max-w-2xl mx-auto"
         >
-          <h2 className="text-2xl font-bold text-center mb-8 text-gray-800 dark:text-gray-100">Book an Appointment</h2>
+          <h2 className="text-2xl font-bold text-center mb-8 text-gray-800 dark:text-gray-100">Reserva una Cita</h2>
           <Suspense fallback={<LoadingCard />}>
             <BookingForm />
           </Suspense>
@@ -85,13 +91,22 @@ export default function IndexPage() {
           className="text-center"
         >
           <div className="p-6 rounded-lg backdrop-blur-lg bg-white/30 dark:bg-slate-900/30 border-none shadow-lg max-w-xl mx-auto">
-            <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4">Need Immediate Assistance?</h3>
+            <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4">Necessites Assistència Immediata?</h3>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
-              For emergency situations or immediate support, please contact our 24/7 hotline:
+              Per a situacions d'emergència o suport immediat, contacta amb la Dra. Maria Serrat:
             </p>
-            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              1-800-VET-CARE
-            </p>
+            <div className="space-y-4">
+              <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                (34) 660 428 065
+              </p>
+              <Button 
+                onClick={handleWhatsAppClick}
+                className="bg-green-500 hover:bg-green-600 text-white flex items-center gap-2 mx-auto"
+              >
+                <WhatsappLogo size={24} weight="fill" />
+                Contacta per WhatsApp
+              </Button>
+            </div>
           </div>
         </motion.section>
       </div>
