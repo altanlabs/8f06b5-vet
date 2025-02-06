@@ -48,7 +48,7 @@ export function BookingForm() {
           status: 'Scheduled'
         })
         
-        toast.success('Appointment booked successfully!')
+        toast.success('Cita reservada amb èxit!')
         
         // Reset form
         setDate(undefined)
@@ -59,7 +59,7 @@ export function BookingForm() {
         setPetType('')
       }
     } catch (error) {
-      toast.error('Failed to book appointment. Please try again.')
+      toast.error('Error en reservar la cita. Si us plau, torna-ho a provar.')
     } finally {
       setIsSubmitting(false)
     }
@@ -69,7 +69,7 @@ export function BookingForm() {
     <Card className="p-6 backdrop-blur-lg bg-white/30 dark:bg-slate-900/30 border-none shadow-lg">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-4">
-          <Label>Service Type</Label>
+          <Label>Tipus de Servei</Label>
           <RadioGroup
             defaultValue="scheduled"
             onValueChange={(value) => setBookingType(value as 'scheduled' | 'urgent')}
@@ -77,17 +77,17 @@ export function BookingForm() {
           >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="scheduled" id="scheduled" />
-              <Label htmlFor="scheduled">Scheduled Visit (No Travel Fee)</Label>
+              <Label htmlFor="scheduled">Visita Programada (Sense cost de desplaçament)</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="urgent" id="urgent" />
-              <Label htmlFor="urgent">Urgent Service (+ Travel Fee)</Label>
+              <Label htmlFor="urgent">Servei Urgent (+ Taxa de desplaçament)</Label>
             </div>
           </RadioGroup>
         </div>
 
         <div className="space-y-4">
-          <Label>Location</Label>
+          <Label>Ubicació</Label>
           <ServiceAreaSelector 
             onSelect={setSelectedAreaId} 
             bookingType={bookingType}
@@ -95,31 +95,31 @@ export function BookingForm() {
         </div>
 
         <div className="space-y-4">
-          <Label>Service</Label>
+          <Label>Servei</Label>
           <ServiceSelector onSelect={setSelectedServiceId} />
         </div>
 
         <div className="space-y-4">
-          <Label>Pet Information</Label>
+          <Label>Informació de la Mascota</Label>
           <Input 
-            placeholder="Pet's Name" 
+            placeholder="Nom de la mascota" 
             value={petName}
             onChange={(e) => setPetName(e.target.value)}
           />
           <Select onValueChange={setPetType} value={petType}>
             <SelectTrigger>
-              <SelectValue placeholder="Pet Type" />
+              <SelectValue placeholder="Tipus de mascota" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="dog">Dog</SelectItem>
-              <SelectItem value="cat">Cat</SelectItem>
-              <SelectItem value="other">Other</SelectItem>
+              <SelectItem value="dog">Gos</SelectItem>
+              <SelectItem value="cat">Gat</SelectItem>
+              <SelectItem value="other">Altres</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="space-y-4">
-          <Label>Select Date</Label>
+          <Label>Selecciona Data</Label>
           <Calendar
             mode="single"
             selected={date}
@@ -130,7 +130,7 @@ export function BookingForm() {
         </div>
 
         <div className="space-y-4">
-          <Label>Available Time Slots</Label>
+          <Label>Horaris Disponibles</Label>
           <TimeSlotSelector
             onSelect={setSelectedTimeSlot}
             selectedDate={date}
@@ -143,7 +143,7 @@ export function BookingForm() {
           className="w-full bg-blue-600 hover:bg-blue-700"
           disabled={!date || !selectedAreaId || !selectedServiceId || !selectedTimeSlot || !petName || !petType || isSubmitting}
         >
-          {isSubmitting ? 'Booking...' : 'Book Appointment'}
+          {isSubmitting ? 'Reservant...' : 'Reservar Cita'}
         </Button>
       </form>
     </Card>
