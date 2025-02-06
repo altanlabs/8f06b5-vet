@@ -7,7 +7,38 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-// ... (previous constants remain the same)
+function LoadingCard() {
+  return (
+    <Card className="p-6 backdrop-blur-lg bg-white/30 dark:bg-slate-900/30 border-none shadow-lg">
+      <div className="animate-pulse space-y-4">
+        <div className="h-4 bg-primary/20 rounded w-1/4"></div>
+        <div className="h-10 bg-primary/20 rounded"></div>
+        <div className="h-4 bg-primary/20 rounded w-1/3"></div>
+        <div className="h-10 bg-primary/20 rounded"></div>
+        <div className="h-4 bg-primary/20 rounded w-1/2"></div>
+        <div className="h-10 bg-primary/20 rounded"></div>
+      </div>
+    </Card>
+  )
+}
+
+const EQUINE_SERVICES = [
+  { name: "Medicina General Equina", price: 80, description: "Examen complet i diagnòstic general" },
+  { name: "Medicina Esportiva Equina", price: 120, description: "Avaluació i tractament per a cavalls esportius" },
+  { name: "Odontologia Equina", price: 90, description: "Cura dental completa i manteniment" },
+  { name: "Reproducció Equina", price: 150, description: "Serveis reproductius i obstetrícia" },
+  { name: "Cirurgia Equina", price: 500, description: "Procediments quirúrgics especialitzats" },
+  { name: "Rehabilitació Equina", price: 100, description: "Teràpia i recuperació post-lesió" },
+  { name: "Medicina Preventiva Equina", price: 70, description: "Vacunacions i controls preventius" },
+];
+
+const OTHER_SERVICES = [
+  { name: "Medicina General", price: 50, description: "Consulta i examen general" },
+  { name: "Cirurgia General", price: 200, description: "Procediments quirúrgics estàndard" },
+  { name: "Odontologia", price: 80, description: "Tractaments dentals complets" },
+  { name: "Medicina Preventiva", price: 45, description: "Vacunacions i controls rutinaris" },
+  { name: "Urgències", price: 120, description: "Atenció immediata per a casos urgents" },
+];
 
 export default function IndexPage() {
   const handleWhatsAppClick = () => {
