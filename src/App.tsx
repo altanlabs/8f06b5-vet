@@ -23,12 +23,12 @@ function App() {
     <DatabaseProvider config={config}>
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
         <Router>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<IndexPage />} />
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<IndexPage />} />
               <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Layout>
+            </Route>
+          </Routes>
           <Toaster />
         </Router>
       </ThemeProvider>
