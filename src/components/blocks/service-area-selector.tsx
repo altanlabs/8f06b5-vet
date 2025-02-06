@@ -1,36 +1,35 @@
-import { useDatabase } from "@altanlabs/database";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useEffect } from "react";
 
 interface ServiceAreaSelectorProps {
   onSelect: (areaId: string) => void;
   bookingType: "scheduled" | "urgent";
 }
 
+const AREAS = [
+  { id: "bcn", name: "Barcelona", travelFee: 0 },
+  { id: "gir", name: "Girona", travelFee: 0 },
+  { id: "tar", name: "Tarragona", travelFee: 0 },
+  { id: "lle", name: "Lleida", travelFee: 0 },
+  { id: "and", name: "Andorra", travelFee: 50 },
+  { id: "ara", name: "Aragó", travelFee: 50 },
+];
+
 export function ServiceAreaSelector({ onSelect, bookingType }: ServiceAreaSelectorProps) {
-  const { records = [], isLoading, refresh } = useDatabase("service_areas", {
-    sort: [{ field: "name", direction: "asc" }]
-  });
-
-  useEffect(() => {
-    refresh();
-  }, []);
-
   const filteredAreas = bookingType === "scheduled" 
-    ? records?.filter(area => area.fields?.travel_fee === 0)
-    : records;
+    ? AREAS.filter(area => area.travelFee === 0)
+    : AREAS;
 
   return (
-    <Select onValueChange={onSelect} disabled={isLoading}>
+    <Select onValueChange={onSelect}>
       <SelectTrigger>
-        <SelectValue placeholder={isLoading ? "Loading areas..." : "Select your area"} />
+        <SelectValue placeholder="Selecciona la zona" />
       </SelectTrigger>
       <SelectContent>
-        {filteredAreas?.map((area) => (
+        {filteredAreas.map((area) => (
           <SelectItem key={area.id} value={area.id}>
-            {area.fields?.name}
-            {bookingType === "urgent" && area.fields?.travel_fee > 0 && 
-              ` (+$${area.fields?.travel_fee} travel fee)`}
+            {area.name}
+            {bookingType === "urgent" && area.travelFee > 0 && 
+              ` (+${area.travelFee}€ desplaçament)`}
           </SelectItem>
         ))}
       </SelectContent>
