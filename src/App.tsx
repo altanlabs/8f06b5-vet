@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import IndexPage from "./pages";
 import NotFound from "./pages/NotFound";
+import "./styles/datepicker.css";
 
 const config = {
   API_BASE_URL: "https://api.altan.ai/galaxia/hook/mSXDoZ",
