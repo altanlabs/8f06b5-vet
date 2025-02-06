@@ -5,53 +5,53 @@
 
 /* Light theme variables */
 .light {
-  --background: #f0f7ff;
-  --foreground: #1e293b;
-  --muted: #e2e8f0;
-  --muted-foreground: #64748b;
-  --border: rgba(226, 232, 240, 0.3);
-  --input: rgba(226, 232, 240, 0.3);
-  --primary: #2563eb;
+  --background: #F5F1E3;
+  --foreground: #050505;
+  --muted: #DDDBCB;
+  --muted-foreground: #050505;
+  --border: #DDDBCB;
+  --input: #DDDBCB;
+  --primary: #1B9AAA;
   --primary-foreground: #ffffff;
-  --secondary: rgba(241, 245, 249, 0.7);
-  --secondary-foreground: #1e293b;
-  --accent: rgba(241, 245, 249, 0.7);
-  --accent-foreground: #1e293b;
+  --secondary: #DDDBCB;
+  --secondary-foreground: #050505;
+  --accent: #1B9AAA;
+  --accent-foreground: #ffffff;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --ring: #93c5fd;
+  --ring: #1B9AAA;
   --radius: 0.75rem;
 }
 
 /* Dark theme variables */
 .dark {
-  --background: #0f172a;
-  --foreground: #f8fafc;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --border: rgba(30, 41, 59, 0.3);
-  --input: rgba(30, 41, 59, 0.3);
-  --primary: #3b82f6;
-  --primary-foreground: #ffffff;
-  --secondary: rgba(30, 41, 59, 0.7);
-  --secondary-foreground: #f8fafc;
-  --accent: rgba(30, 41, 59, 0.7);
-  --accent-foreground: #f8fafc;
+  --background: #050505;
+  --foreground: #F5F1E3;
+  --muted: #1B9AAA;
+  --muted-foreground: #F5F1E3;
+  --border: #1B9AAA;
+  --input: #1B9AAA;
+  --primary: #1B9AAA;
+  --primary-foreground: #F5F1E3;
+  --secondary: #1B9AAA;
+  --secondary-foreground: #F5F1E3;
+  --accent: #1B9AAA;
+  --accent-foreground: #F5F1E3;
   --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --ring: #1e293b;
+  --destructive-foreground: #F5F1E3;
+  --ring: #1B9AAA;
   --radius: 0.75rem;
 }
 
 /* Glassmorphism effects */
 .glass {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(245, 241, 227, 0.2);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(27, 154, 170, 0.18);
 }
 
 .dark .glass {
-  background: rgba(15, 23, 42, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(5, 5, 5, 0.2);
+  border: 1px solid rgba(27, 154, 170, 0.1);
 }
