@@ -38,7 +38,7 @@ export function AboutSection() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                  Hola! Sóc la Maria, tinc 26 anys i sóc veterinària llicenciada per la Universitat de Girona.
+                  Hola! Sóc la Maria, tinc 26 anys i sóc veterinària llicenciada per la Universitat de València. Actualment visc i treballo a la província de Girona.
                 </motion.p>
                 <motion.p
                   initial={{ opacity: 0, y: 10 }}
@@ -46,8 +46,7 @@ export function AboutSection() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.4 }}
                 >
-                  Tot i que estimo tots els animals, la meva passió són els cavalls. Vaig estudiar a València i posteriorment
-                  vaig tenir l'oportunitat de treballar a França, on la cirurgia equina està molt avançada.
+                  Tot i que estimo tots els animals, la meva passió són els cavalls. Després de graduar-me, vaig tenir l'oportunitat de treballar a França, on la cirurgia equina està molt avançada.
                 </motion.p>
                 <motion.p
                   initial={{ opacity: 0, y: 10 }}
