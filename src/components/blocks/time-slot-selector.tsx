@@ -27,7 +27,16 @@ export function TimeSlotSelector({ onSelect, selectedDate, selectedAreaId }: Tim
   }, [selectedDate]);
 
   if (!selectedDate || !selectedAreaId) return null;
-  if (isLoading) return <SelectTrigger>Loading available times...</SelectTrigger>;
+  
+  if (isLoading) {
+    return (
+      <Select>
+        <SelectTrigger>
+          <SelectValue placeholder="Loading time slots..." />
+        </SelectTrigger>
+      </Select>
+    );
+  }
 
   const timeSlots = records.map(record => {
     const time = new Date(record.fields.available_time);
