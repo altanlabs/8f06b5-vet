@@ -1,5 +1,4 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { AppSidebar } from "@/components/blocks/app-sidebar-collapsible-tree";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,26 +41,9 @@ interface FooterProps {
   links?: Array<{ label: string; href: string }>;
 }
 
-interface SidebarItem {
-  label: string;
-  href: string;
-  icon?: React.ReactNode;
-  items?: SidebarItem[];
-}
-
-interface SidebarProps {
-  items: SidebarItem[];
-  defaultOpen?: boolean;
-  companyName?: string;
-  logo?: React.ReactNode;
-  footerComponent?: React.ReactNode;
-}
-
 interface LayoutProps {
-  showSidebar?: boolean;
   showHeader?: boolean;
   showFooter?: boolean;
-  sidebarConfig?: SidebarProps;
   header?: HeaderProps | false;
   footer?: FooterProps | false;
 }
@@ -73,7 +55,7 @@ const DefaultNavigation: NavItem[] = [
 ];
 
 const DefaultHeader: HeaderProps = {
-  title: "Dashboard",
+  title: "Veterinary Services",
   navigation: DefaultNavigation,
   showNotifications: true,
   showUserMenu: true,
@@ -82,11 +64,11 @@ const DefaultHeader: HeaderProps = {
     { icon: <Settings className="mr-2 h-4 w-4" />, label: "Settings" },
     { icon: <LogOut className="mr-2 h-4 w-4" />, label: "Logout" },
   ],
-  avatarFallback: "JD",
+  avatarFallback: "VS",
 };
 
 const DefaultFooter: FooterProps = {
-  text: "© 2024 Your Company. All rights reserved.",
+  text: "© 2024 Veterinary Services. All rights reserved.",
   links: [
     { label: "Privacy", href: "/privacy" },
     { label: "Terms", href: "/terms" },
@@ -94,10 +76,8 @@ const DefaultFooter: FooterProps = {
 };
 
 export default function Layout({
-  showSidebar = true,
   showHeader = true,
   showFooter = true,
-  sidebarConfig,
   header = DefaultHeader,
   footer = DefaultFooter,
 }: LayoutProps) {
@@ -105,7 +85,6 @@ export default function Layout({
   const { theme, setTheme } = useTheme();
   const initialThemeSet = useRef(false);
 
-  // Move theme parameter handling to useEffect
   useEffect(() => {
     if (initialThemeSet.current) return;
     
@@ -113,7 +92,6 @@ export default function Layout({
     const themeParam = queryParams.get('theme');
     if (themeParam === 'light' || themeParam === 'dark') {
       setTheme(themeParam);
-      // Remove the theme parameter from URL
       queryParams.delete('theme');
       const newSearch = queryParams.toString();
       const newUrl = `${location.pathname}${newSearch ? `?${newSearch}` : ''}${location.hash}`;
@@ -124,18 +102,6 @@ export default function Layout({
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background text-foreground">
-      {/* Optional Sidebar */}
-      {showSidebar && (
-        <AppSidebar 
-          className="h-full border-r border-border" 
-          items={sidebarConfig?.items} 
-          defaultOpen={sidebarConfig?.defaultOpen}
-          companyName={sidebarConfig?.companyName}
-          logo={sidebarConfig?.logo}
-          footerComponent={sidebarConfig?.footerComponent}
-        />
-      )}
-
       {/* Main Content */}
       <div className="flex flex-1 flex-col">
         {/* Configurable Header */}
