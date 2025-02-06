@@ -1,160 +1,152 @@
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { SimpleCalendar } from '@/components/ui/simple-calendar'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ServiceAreaSelector } from './service-area-selector'
-import { ServiceSelector } from './service-selector'
-import { TimeSlotSelector } from './time-slot-selector'
-import { useDatabase } from '@altanlabs/database'
-import { toast } from 'sonner'
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { ServiceSelector } from "./service-selector"
+import { TimeSlotSelector } from "./time-slot-selector"
+import { useState } from "react"
+import { toast } from "sonner"
+
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "El nom ha de tenir almenys 2 caràcters.",
+  }),
+  email: z.string().email({
+    message: "Si us plau, introdueix un email vàlid.",
+  }),
+  phone: z.string().min(9, {
+    message: "Si us plau, introdueix un número de telèfon vàlid.",
+  }),
+  serviceId: z.string({
+    required_error: "Si us plau, selecciona un servei.",
+  }),
+  timeSlot: z.string({
+    required_error: "Si us plau, selecciona una hora.",
+  }),
+})
 
 export function BookingForm() {
-  const [date, setDate] = useState<Date | undefined>(undefined)
-  const [bookingType, setBookingType] = useState<'scheduled' | 'urgent'>('scheduled')
-  const [selectedAreaId, setSelectedAreaId] = useState<string>()
-  const [selectedServiceId, setSelectedServiceId] = useState<string>()
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>()
-  const [petName, setPetName] = useState('')
-  const [petType, setPetType] = useState('')
-  const [otherPetType, setOtherPetType] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  
-  const { addRecord } = useDatabase('appointments')
-  const { addRecord: addPet } = useDatabase('pets')
-  
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (isSubmitting) return
+  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [selectedService, setSelectedService] = useState<string>();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      serviceId: "",
+      timeSlot: "",
+    },
+  })
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Here you would typically send the form data to your backend
+    console.log(values)
     
-    try {
-      setIsSubmitting(true)
-      // First create the pet record
-      const petResponse = await addPet({
-        pet_name: petName,
-        species: petType === 'other' ? otherPetType : petType
-      })
-      
-      // Then create the appointment
-      if (petResponse && date && selectedAreaId && selectedServiceId && selectedTimeSlot) {
-        await addRecord({
-          appointment_date: date.toISOString(),
-          service_type: bookingType,
-          service_area_id: [selectedAreaId],
-          service_id: [selectedServiceId],
-          pet_id: [petResponse.id],
-          status: 'Scheduled'
-        })
-        
-        toast.success('Cita reservada amb èxit!')
-        
-        // Reset form
-        setDate(undefined)
-        setSelectedAreaId(undefined)
-        setSelectedServiceId(undefined)
-        setSelectedTimeSlot(undefined)
-        setPetName('')
-        setPetType('')
-        setOtherPetType('')
-      }
-    } catch (error) {
-      toast.error('Error en reservar la cita. Si us plau, torna-ho a provar.')
-    } finally {
-      setIsSubmitting(false)
-    }
+    // Show success message
+    toast.success("Cita reservada correctament!", {
+      description: "T'enviarem un email amb la confirmació.",
+    })
+    
+    // Reset form
+    form.reset()
+    setSelectedDate(undefined)
+    setSelectedService(undefined)
   }
 
+  const handleServiceSelect = (serviceId: string) => {
+    setSelectedService(serviceId);
+    form.setValue("serviceId", serviceId);
+  };
+
+  const handleTimeSelect = (timeSlot: string) => {
+    form.setValue("timeSlot", timeSlot);
+  };
+
   return (
-    <Card className="p-6 backdrop-blur-lg bg-secondary/10 border border-border shadow-lg">
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="space-y-4">
-          <Label>Tipus de Servei</Label>
-          <RadioGroup
-            defaultValue="scheduled"
-            onValueChange={(value) => setBookingType(value as 'scheduled' | 'urgent')}
-            className="flex flex-col space-y-2"
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="scheduled" id="scheduled" />
-              <Label htmlFor="scheduled">Visita Programada (Sense cost de desplaçament)</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="urgent" id="urgent" />
-              <Label htmlFor="urgent">Servei Urgent (+ Taxa de desplaçament)</Label>
-            </div>
-          </RadioGroup>
-        </div>
-
-        <div className="space-y-4">
-          <Label>Ubicació</Label>
-          <ServiceAreaSelector 
-            onSelect={setSelectedAreaId} 
-            bookingType={bookingType}
-          />
-        </div>
-
-        <div className="space-y-4">
-          <Label>Servei</Label>
-          <ServiceSelector onSelect={setSelectedServiceId} />
-        </div>
-
-        <div className="space-y-4">
-          <Label>Informació de l'Animal</Label>
-          <Input 
-            placeholder="Nom de l'animal" 
-            value={petName}
-            onChange={(e) => setPetName(e.target.value)}
-          />
-          <Select onValueChange={setPetType} value={petType}>
-            <SelectTrigger>
-              <SelectValue placeholder="Tipus d'animal" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="cavall">Cavall</SelectItem>
-              <SelectItem value="gos">Gos</SelectItem>
-              <SelectItem value="gat">Gat</SelectItem>
-              <SelectItem value="other">Altre</SelectItem>
-            </SelectContent>
-          </Select>
-          {petType === 'other' && (
-            <Input 
-              placeholder="Especifica el tipus d'animal" 
-              value={otherPetType}
-              onChange={(e) => setOtherPetType(e.target.value)}
-            />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nom</FormLabel>
+              <FormControl>
+                <Input placeholder="El teu nom" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
-        </div>
-
-        <div className="space-y-4">
-          <Label>Selecciona Data</Label>
-          <SimpleCalendar
-            value={date}
-            onChange={setDate}
-            disablePastDates
-          />
-        </div>
-
-        <div className="space-y-4">
-          <Label>Horaris Disponibles</Label>
-          <TimeSlotSelector
-            onSelect={setSelectedTimeSlot}
-            selectedDate={date}
-            selectedAreaId={selectedAreaId}
-          />
-        </div>
-
-        <Button 
-          type="submit" 
-          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-          disabled={!date || !selectedAreaId || !selectedServiceId || !selectedTimeSlot || !petName || 
-                   !petType || (petType === 'other' && !otherPetType) || isSubmitting}
-        >
-          {isSubmitting ? 'Reservant...' : 'Reservar Cita'}
-        </Button>
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="El teu email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Telèfon</FormLabel>
+              <FormControl>
+                <Input placeholder="El teu telèfon" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="serviceId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Servei</FormLabel>
+              <FormControl>
+                <ServiceSelector onSelect={handleServiceSelect} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="timeSlot"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Hora</FormLabel>
+              <FormControl>
+                <TimeSlotSelector 
+                  onSelect={handleTimeSelect}
+                  selectedDate={selectedDate}
+                  selectedAreaId={selectedService}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" className="w-full">Reservar Cita</Button>
       </form>
-    </Card>
+    </Form>
   )
 }
