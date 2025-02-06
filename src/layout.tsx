@@ -49,29 +49,29 @@ interface LayoutProps {
 }
 
 const DefaultNavigation: NavItem[] = [
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-  { label: "Pricing", href: "/pricing" },
+  { label: "Sobre nosaltres", href: "/about" },
+  { label: "Contacte", href: "/contact" },
+  { label: "Preus", href: "/pricing" },
 ];
 
 const DefaultHeader: HeaderProps = {
-  title: "Veterinary Services",
+  title: "Dra. Maria Serrat",
   navigation: DefaultNavigation,
   showNotifications: true,
   showUserMenu: true,
   showThemeToggle: true,
   userMenuItems: [
-    { icon: <Settings className="mr-2 h-4 w-4" />, label: "Settings" },
-    { icon: <LogOut className="mr-2 h-4 w-4" />, label: "Logout" },
+    { icon: <Settings className="mr-2 h-4 w-4" />, label: "Configuració" },
+    { icon: <LogOut className="mr-2 h-4 w-4" />, label: "Sortir" },
   ],
-  avatarFallback: "VS",
+  avatarFallback: "MS",
 };
 
 const DefaultFooter: FooterProps = {
-  text: "© 2024 Veterinary Services. All rights reserved.",
+  text: "© 2024 Dra. Maria Serrat. Tots els drets reservats.",
   links: [
-    { label: "Privacy", href: "/privacy" },
-    { label: "Terms", href: "/terms" },
+    { label: "Privacitat", href: "/privacy" },
+    { label: "Termes", href: "/terms" },
   ],
 };
 
