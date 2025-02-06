@@ -11,18 +11,36 @@ interface ServiceSelectorProps {
 }
 
 const SERVICES = [
-  { id: "equine-general", name: "Medicina General Equina", price: 80 },
-  { id: "equine-sports", name: "Medicina Esportiva Equina", price: 120 },
-  { id: "equine-dental", name: "Odontologia Equina", price: 90 },
-  { id: "equine-repro", name: "Reproducció Equina", price: 150 },
-  { id: "equine-surgery", name: "Cirurgia Equina", price: 500 },
-  { id: "equine-rehab", name: "Rehabilitació Equina", price: 100 },
-  { id: "equine-prevent", name: "Medicina Preventiva Equina", price: 70 },
-  { id: "general-med", name: "Medicina General", price: 50 },
-  { id: "general-surgery", name: "Cirurgia General", price: 200 },
-  { id: "general-dental", name: "Odontologia", price: 80 },
-  { id: "general-prevent", name: "Medicina Preventiva", price: 45 },
-  { id: "emergency", name: "Urgències", price: 120 },
+  {
+    id: "medicina-general-equina",
+    name: "Medicina General Equina",
+    description: "Examen complet i diagnòstic general",
+    price: "80€"
+  },
+  {
+    id: "medicina-esportiva-equina",
+    name: "Medicina Esportiva Equina",
+    description: "Avaluació i tractament per a cavalls esportius",
+    price: "120€"
+  },
+  {
+    id: "odontologia-equina",
+    name: "Odontologia Equina",
+    description: "Cura dental completa i manteniment",
+    price: "90€"
+  },
+  {
+    id: "medicina-general",
+    name: "Medicina General",
+    description: "Consulta i examen general per a altres animals",
+    price: "50€"
+  },
+  {
+    id: "urgencies",
+    name: "Urgències",
+    description: "Atenció immediata per a casos urgents",
+    price: "120€"
+  }
 ]
 
 export function ServiceSelector({ onSelect }: ServiceSelectorProps) {
@@ -32,10 +50,13 @@ export function ServiceSelector({ onSelect }: ServiceSelectorProps) {
         <SelectValue placeholder="Selecciona un servei" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="">Selecciona un servei</SelectItem>
         {SERVICES.map((service) => (
           <SelectItem key={service.id} value={service.id}>
-            {service.name} - {service.price}€
+            <div className="flex flex-col">
+              <span className="font-medium">{service.name}</span>
+              <span className="text-sm text-muted-foreground">{service.description}</span>
+              <span className="text-sm font-medium">{service.price}</span>
+            </div>
           </SelectItem>
         ))}
       </SelectContent>
