@@ -20,7 +20,15 @@ export function ServiceAreaSelector({ onSelect, bookingType }: ServiceAreaSelect
     ? records.filter(area => area.fields.travel_fee === 0)
     : records;
 
-  if (isLoading) return <SelectTrigger>Loading areas...</SelectTrigger>;
+  if (isLoading) {
+    return (
+      <Select>
+        <SelectTrigger>
+          <SelectValue placeholder="Loading areas..." />
+        </SelectTrigger>
+      </Select>
+    );
+  }
 
   return (
     <Select onValueChange={onSelect}>
