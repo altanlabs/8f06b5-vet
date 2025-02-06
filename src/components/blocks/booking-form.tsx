@@ -20,14 +20,17 @@ export function BookingForm() {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>()
   const [petName, setPetName] = useState('')
   const [petType, setPetType] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   
   const { addRecord } = useDatabase('appointments')
   const { addRecord: addPet } = useDatabase('pets')
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (isSubmitting) return
     
     try {
+      setIsSubmitting(true)
       // First create the pet record
       const petResponse = await addPet({
         pet_name: petName,
@@ -57,6 +60,8 @@ export function BookingForm() {
       }
     } catch (error) {
       toast.error('Failed to book appointment. Please try again.')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -101,7 +106,7 @@ export function BookingForm() {
             value={petName}
             onChange={(e) => setPetName(e.target.value)}
           />
-          <Select onValueChange={setPetType}>
+          <Select onValueChange={setPetType} value={petType}>
             <SelectTrigger>
               <SelectValue placeholder="Pet Type" />
             </SelectTrigger>
@@ -136,9 +141,9 @@ export function BookingForm() {
         <Button 
           type="submit" 
           className="w-full bg-blue-600 hover:bg-blue-700"
-          disabled={!date || !selectedAreaId || !selectedServiceId || !selectedTimeSlot || !petName || !petType}
+          disabled={!date || !selectedAreaId || !selectedServiceId || !selectedTimeSlot || !petName || !petType || isSubmitting}
         >
-          Book Appointment
+          {isSubmitting ? 'Booking...' : 'Book Appointment'}
         </Button>
       </form>
     </Card>
