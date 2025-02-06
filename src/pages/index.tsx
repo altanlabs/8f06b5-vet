@@ -4,6 +4,7 @@ import { BookingForm } from "@/components/blocks/booking-form"
 import { Suspense } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Image } from "@/components/ui/image"
 
 function LoadingCard() {
   return (
@@ -100,8 +101,13 @@ export default function IndexPage() {
               </p>
               <Button 
                 onClick={handleWhatsAppClick}
-                className="bg-green-500 hover:bg-green-600 text-white mx-auto"
+                className="bg-green-500 hover:bg-green-600 text-white mx-auto flex items-center gap-2"
               >
+                <img 
+                  src="https://api.altan.ai/platform/media/dfe7c772-7476-4fdc-85de-2db1aeede1b2?account_id=8cd115a4-5f19-42ef-bc62-172f6bff28e7" 
+                  alt="WhatsApp"
+                  className="w-5 h-5"
+                />
                 Contacta per WhatsApp
               </Button>
             </div>
