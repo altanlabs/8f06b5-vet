@@ -13,7 +13,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { ServiceSelector } from "./service-selector"
 import { TimeSlotSelector } from "./time-slot-selector"
-import { useState } from "react"
 import { toast } from "sonner"
 
 const formSchema = z.object({
@@ -129,7 +128,9 @@ export function BookingForm() {
             <FormItem>
               <FormLabel>Hora</FormLabel>
               <FormControl>
-                <TimeSlotSelector onSelect={handleTimeSelect} />
+                <TimeSlotSelector 
+                  onSelect={handleTimeSelect}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
