@@ -1,7 +1,7 @@
 import { Outlet, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { SunIcon, MoonIcon } from "lucide-react";
-import { useTheme } from "@/theme/theme-provider"; // Updated import path
+import { useTheme } from "@/theme/theme-provider";
 
 interface NavItem {
   label: string;
@@ -42,8 +42,8 @@ export default function Layout() {
               <h1 className="text-lg font-semibold text-foreground">Dra. Maria Serrat</h1>
             </Link>
 
-            {/* Navigation Links */}
-            <nav className="flex items-center gap-6">
+            {/* Navigation Links - Hidden on Mobile */}
+            <nav className="hidden md:flex items-center gap-6">
               {DefaultNavigation.map((item, index) => (
                 <button
                   key={index}
