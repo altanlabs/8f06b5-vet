@@ -5,53 +5,53 @@
 
 /* Light theme variables */
 .light {
-  --background: #F5F1E3;
-  --foreground: #050505;
-  --muted: #DDDBCB;
-  --muted-foreground: #050505;
-  --border: #DDDBCB;
-  --input: #DDDBCB;
-  --primary: #1B9AAA;
-  --primary-foreground: #ffffff;
-  --secondary: #DDDBCB;
-  --secondary-foreground: #050505;
-  --accent: #1B9AAA;
-  --accent-foreground: #ffffff;
+  --background: #B7D5D4;
+  --foreground: #373E40;
+  --muted: #77878B;
+  --muted-foreground: #305252;
+  --border: #488286;
+  --input: #77878B;
+  --primary: #488286;
+  --primary-foreground: #B7D5D4;
+  --secondary: #305252;
+  --secondary-foreground: #B7D5D4;
+  --accent: #488286;
+  --accent-foreground: #B7D5D4;
   --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --ring: #1B9AAA;
+  --destructive-foreground: #B7D5D4;
+  --ring: #488286;
   --radius: 0.75rem;
 }
 
 /* Dark theme variables */
 .dark {
-  --background: #050505;
-  --foreground: #F5F1E3;
-  --muted: #1B9AAA;
-  --muted-foreground: #F5F1E3;
-  --border: #1B9AAA;
-  --input: #1B9AAA;
-  --primary: #1B9AAA;
-  --primary-foreground: #F5F1E3;
-  --secondary: #1B9AAA;
-  --secondary-foreground: #F5F1E3;
-  --accent: #1B9AAA;
-  --accent-foreground: #F5F1E3;
+  --background: #373E40;
+  --foreground: #B7D5D4;
+  --muted: #305252;
+  --muted-foreground: #77878B;
+  --border: #488286;
+  --input: #305252;
+  --primary: #488286;
+  --primary-foreground: #B7D5D4;
+  --secondary: #305252;
+  --secondary-foreground: #B7D5D4;
+  --accent: #488286;
+  --accent-foreground: #B7D5D4;
   --destructive: #ef4444;
-  --destructive-foreground: #F5F1E3;
-  --ring: #1B9AAA;
+  --destructive-foreground: #B7D5D4;
+  --ring: #488286;
   --radius: 0.75rem;
 }
 
 /* Glassmorphism effects */
 .glass {
-  background: rgba(245, 241, 227, 0.2);
+  background: rgba(183, 213, 212, 0.2);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(27, 154, 170, 0.18);
+  border: 1px solid rgba(72, 130, 134, 0.18);
 }
 
 .dark .glass {
-  background: rgba(5, 5, 5, 0.2);
-  border: 1px solid rgba(27, 154, 170, 0.1);
+  background: rgba(55, 62, 64, 0.2);
+  border: 1px solid rgba(72, 130, 134, 0.1);
 }
