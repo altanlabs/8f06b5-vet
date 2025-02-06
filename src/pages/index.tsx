@@ -26,7 +26,7 @@ export default function IndexPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted">
       <div className="container mx-auto px-4 py-8 md:py-16 space-y-12">
         {/* Hero Section */}
         <motion.section 
@@ -35,15 +35,15 @@ export default function IndexPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <Badge variant="secondary" className="mb-4 bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-foreground">
+          <Badge variant="secondary" className="mb-4 bg-secondary text-secondary-foreground">
             Veterinària Especialista en Equins i Cirurgia
           </Badge>
-          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl text-primary">
             Cura Professional
             <br />
             Especialitzada
           </h1>
-          <p className="mx-auto max-w-[700px] text-foreground/80 md:text-xl">
+          <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
             La Dra. Maria Serrat ofereix serveis veterinaris especialitzats en equins i cirurgia avançada. 
             Amb anys d'experiència en el tractament de cavalls i altres animals, garantim una atenció professional i d'alta qualitat.
           </p>
@@ -56,17 +56,17 @@ export default function IndexPage() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="grid md:grid-cols-3 gap-8 text-center"
         >
-          <div className="p-6 rounded-lg backdrop-blur-lg bg-white/30 dark:bg-black/30 border border-primary/10 shadow-lg">
+          <div className="p-6 rounded-lg backdrop-blur-lg bg-secondary/10 border border-border shadow-lg">
             <h3 className="text-xl font-semibold text-primary mb-2">Especialista en Equins</h3>
-            <p className="text-foreground/80">Atenció especialitzada per a cavalls, amb experiència en tractaments específics i cura integral equina.</p>
+            <p className="text-muted-foreground">Atenció especialitzada per a cavalls, amb experiència en tractaments específics i cura integral equina.</p>
           </div>
-          <div className="p-6 rounded-lg backdrop-blur-lg bg-white/30 dark:bg-black/30 border border-primary/10 shadow-lg">
+          <div className="p-6 rounded-lg backdrop-blur-lg bg-secondary/10 border border-border shadow-lg">
             <h3 className="text-xl font-semibold text-primary mb-2">Cirurgia Avançada</h3>
-            <p className="text-foreground/80">Procediments quirúrgics d'alta complexitat amb tecnologia moderna i tècniques avançades.</p>
+            <p className="text-muted-foreground">Procediments quirúrgics d'alta complexitat amb tecnologia moderna i tècniques avançades.</p>
           </div>
-          <div className="p-6 rounded-lg backdrop-blur-lg bg-white/30 dark:bg-black/30 border border-primary/10 shadow-lg">
+          <div className="p-6 rounded-lg backdrop-blur-lg bg-secondary/10 border border-border shadow-lg">
             <h3 className="text-xl font-semibold text-primary mb-2">Atenció 24/7</h3>
-            <p className="text-foreground/80">Servei d'emergència disponible les 24 hores per a quan més ho necessitis.</p>
+            <p className="text-muted-foreground">Servei d'emergència disponible les 24 hores per a quan més ho necessitis.</p>
           </div>
         </motion.section>
 
@@ -79,18 +79,18 @@ export default function IndexPage() {
         >
           <h2 className="text-2xl font-bold mb-6 text-primary">Serveis Especialitzats</h2>
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-4 rounded-lg bg-white/30 dark:bg-black/30 border border-primary/10">
+            <div className="p-4 rounded-lg bg-secondary/10 border border-border">
               <h3 className="font-semibold text-primary mb-2">Medicina Equina</h3>
-              <ul className="text-foreground/80 space-y-2">
+              <ul className="text-muted-foreground space-y-2">
                 <li>Diagnòstic i tractament de coixeses</li>
                 <li>Medicina esportiva equina</li>
                 <li>Cures preventives</li>
                 <li>Tractaments dentals</li>
               </ul>
             </div>
-            <div className="p-4 rounded-lg bg-white/30 dark:bg-black/30 border border-primary/10">
+            <div className="p-4 rounded-lg bg-secondary/10 border border-border">
               <h3 className="font-semibold text-primary mb-2">Cirurgia</h3>
-              <ul className="text-foreground/80 space-y-2">
+              <ul className="text-muted-foreground space-y-2">
                 <li>Cirurgia general i ortopèdica</li>
                 <li>Cirurgia de teixits tous</li>
                 <li>Cirurgia d'emergència</li>
@@ -120,9 +120,9 @@ export default function IndexPage() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="text-center"
         >
-          <div className="p-6 rounded-lg backdrop-blur-lg bg-white/30 dark:bg-black/30 border border-primary/10 shadow-lg max-w-xl mx-auto">
+          <div className="p-6 rounded-lg backdrop-blur-lg bg-secondary/10 border border-border shadow-lg max-w-xl mx-auto">
             <h3 className="text-xl font-semibold text-primary mb-4">Necessites Assistència Immediata?</h3>
-            <p className="text-foreground/80 mb-4">
+            <p className="text-muted-foreground mb-4">
               Per a emergències o consultes urgents, contacta amb la Dra. Maria Serrat:
             </p>
             <div className="space-y-4">
