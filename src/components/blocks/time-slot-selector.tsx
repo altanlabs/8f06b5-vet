@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { registerLocale } from "react-datepicker"
-import ca from 'date-fns/locale/ca'
+import { ca } from 'date-fns/locale/ca' // Fixed import
 
 registerLocale('ca', ca)
 
