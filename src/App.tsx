@@ -21,7 +21,7 @@ const config = {
 function App() {
   return (
     <DatabaseProvider config={config}>
-      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme" forcedTheme="light">
+      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
         <Router>
           <Routes>
             <Route path="/" element={<Layout />}>
