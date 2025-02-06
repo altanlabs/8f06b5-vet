@@ -1,8 +1,15 @@
-import { Calendar } from "@/components/ui/calendar"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Card } from "@/components/ui/card"
+import { format } from "date-fns"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
+import { CalendarIcon } from "lucide-react"
 
 interface TimeSlotSelectorProps {
   onSelect: (timeSlot: string) => void
@@ -34,23 +41,31 @@ export function TimeSlotSelector({ onSelect, selectedDate }: TimeSlotSelectorPro
     }
   }
 
-  // Disable weekends and past dates
-  const disabledDays = {
-    before: new Date(),
-    after: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
-  }
-
   return (
     <div className="space-y-4">
-      <Card className="p-4">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={handleDateSelect}
-          disabled={disabledDays}
-          className="rounded-md border"
-        />
-      </Card>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant={"outline"}
+            className={cn(
+              "w-full justify-start text-left font-normal",
+              !date && "text-muted-foreground"
+            )}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {date ? format(date, "PPP") : <span>Selecciona una data</span>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <input
+            type="date"
+            className="w-full p-2 border rounded-md"
+            min={new Date().toISOString().split('T')[0]}
+            max={new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
+            onChange={(e) => handleDateSelect(e.target.value ? new Date(e.target.value) : undefined)}
+          />
+        </PopoverContent>
+      </Popover>
 
       {date && (
         <Card className="p-4">
