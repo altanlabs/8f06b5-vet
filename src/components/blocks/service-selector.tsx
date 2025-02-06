@@ -15,7 +15,15 @@ export function ServiceSelector({ onSelect }: ServiceSelectorProps) {
     refresh();
   }, []);
 
-  if (isLoading) return <SelectTrigger>Loading services...</SelectTrigger>;
+  if (isLoading) {
+    return (
+      <Select>
+        <SelectTrigger>
+          <SelectValue placeholder="Loading services..." />
+        </SelectTrigger>
+      </Select>
+    );
+  }
 
   return (
     <Select onValueChange={onSelect}>
