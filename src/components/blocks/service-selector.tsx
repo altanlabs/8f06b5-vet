@@ -7,7 +7,7 @@ interface ServiceSelectorProps {
 }
 
 export function ServiceSelector({ onSelect }: ServiceSelectorProps) {
-  const { records, isLoading, refresh } = useDatabase("veterinary_services", {
+  const { records = [], isLoading, refresh } = useDatabase("veterinary_services", {
     sort: [{ field: "service_name", direction: "asc" }]
   });
 
@@ -15,25 +15,15 @@ export function ServiceSelector({ onSelect }: ServiceSelectorProps) {
     refresh();
   }, []);
 
-  if (isLoading) {
-    return (
-      <Select>
-        <SelectTrigger>
-          <SelectValue placeholder="Loading services..." />
-        </SelectTrigger>
-      </Select>
-    );
-  }
-
   return (
-    <Select onValueChange={onSelect}>
+    <Select onValueChange={onSelect} disabled={isLoading}>
       <SelectTrigger>
-        <SelectValue placeholder="Select service" />
+        <SelectValue placeholder={isLoading ? "Loading services..." : "Select service"} />
       </SelectTrigger>
       <SelectContent>
-        {records.map((service) => (
+        {records?.map((service) => (
           <SelectItem key={service.id} value={service.id}>
-            {service.fields.service_name} (${service.fields.price})
+            {service.fields?.service_name} (${service.fields?.price || 0})
           </SelectItem>
         ))}
       </SelectContent>
