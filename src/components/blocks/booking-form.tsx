@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Calendar } from '@/components/ui/calendar'
+import { SimpleCalendar } from '@/components/ui/simple-calendar'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -66,7 +66,7 @@ export function BookingForm() {
   }
 
   return (
-    <Card className="p-6 backdrop-blur-lg bg-white/30 dark:bg-slate-900/30 border-none shadow-lg">
+    <Card className="p-6 backdrop-blur-lg bg-secondary/10 border border-border shadow-lg">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-4">
           <Label>Tipus de Servei</Label>
@@ -100,17 +100,18 @@ export function BookingForm() {
         </div>
 
         <div className="space-y-4">
-          <Label>Informació de la Mascota</Label>
+          <Label>Informació de l'Animal</Label>
           <Input 
-            placeholder="Nom de la mascota" 
+            placeholder="Nom de l'animal" 
             value={petName}
             onChange={(e) => setPetName(e.target.value)}
           />
           <Select onValueChange={setPetType} value={petType}>
             <SelectTrigger>
-              <SelectValue placeholder="Tipus de mascota" />
+              <SelectValue placeholder="Tipus d'animal" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="horse">Cavall</SelectItem>
               <SelectItem value="dog">Gos</SelectItem>
               <SelectItem value="cat">Gat</SelectItem>
               <SelectItem value="other">Altres</SelectItem>
@@ -120,12 +121,10 @@ export function BookingForm() {
 
         <div className="space-y-4">
           <Label>Selecciona Data</Label>
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            className="rounded-md border"
-            disabled={(date) => date < new Date()}
+          <SimpleCalendar
+            value={date}
+            onChange={setDate}
+            disablePastDates
           />
         </div>
 
@@ -140,7 +139,7 @@ export function BookingForm() {
 
         <Button 
           type="submit" 
-          className="w-full bg-blue-600 hover:bg-blue-700"
+          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
           disabled={!date || !selectedAreaId || !selectedServiceId || !selectedTimeSlot || !petName || !petType || isSubmitting}
         >
           {isSubmitting ? 'Reservant...' : 'Reservar Cita'}
