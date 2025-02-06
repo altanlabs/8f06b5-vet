@@ -1,6 +1,4 @@
-import { useDatabase } from "@altanlabs/database";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useEffect } from "react";
 
 interface TimeSlotSelectorProps {
   onSelect: (timeSlot: string) => void;
@@ -8,43 +6,49 @@ interface TimeSlotSelectorProps {
   selectedAreaId: string | undefined;
 }
 
+// Generate time slots from 9:00 to 20:00
+const generateTimeSlots = () => {
+  const slots = [];
+  for (let hour = 9; hour < 20; hour++) {
+    slots.push({
+      id: `${hour}:00`,
+      time: `${hour}:00`,
+      available: Math.random() > 0.3 // Simulate availability
+    });
+    slots.push({
+      id: `${hour}:30`,
+      time: `${hour}:30`,
+      available: Math.random() > 0.3 // Simulate availability
+    });
+  }
+  return slots;
+};
+
 export function TimeSlotSelector({ onSelect, selectedDate, selectedAreaId }: TimeSlotSelectorProps) {
-  const { records = [], isLoading, refresh } = useDatabase("veterinarian_availability", {
-    filters: selectedDate ? [
-      { 
-        field: "available_date", 
-        operator: "eq", 
-        value: selectedDate.toISOString().split('T')[0] 
-      }
-    ] : [],
-    sort: [{ field: "available_time", direction: "asc" }]
-  });
-
-  useEffect(() => {
-    if (selectedDate) {
-      refresh();
-    }
-  }, [selectedDate]);
-
   if (!selectedDate || !selectedAreaId) return null;
 
-  const timeSlots = records?.map(record => {
-    const time = new Date(record.fields?.available_time);
-    return {
-      id: record.id,
-      time: time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-  });
+  const timeSlots = generateTimeSlots();
+  const availableSlots = timeSlots.filter(slot => slot.available);
+
+  if (availableSlots.length === 0) {
+    return (
+      <Select disabled>
+        <SelectTrigger>
+          <SelectValue placeholder="No hi ha hores disponibles" />
+        </SelectTrigger>
+      </Select>
+    );
+  }
 
   return (
-    <Select onValueChange={onSelect} disabled={isLoading}>
+    <Select onValueChange={onSelect}>
       <SelectTrigger>
-        <SelectValue placeholder={isLoading ? "Loading time slots..." : "Select time"} />
+        <SelectValue placeholder="Selecciona l'hora" />
       </SelectTrigger>
       <SelectContent>
-        {timeSlots?.map((slot) => (
+        {availableSlots.map((slot) => (
           <SelectItem key={slot.id} value={slot.id}>
-            {slot.time}
+            {slot.time}h
           </SelectItem>
         ))}
       </SelectContent>
