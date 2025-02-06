@@ -2,8 +2,13 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
+import { registerLocale } from "react-datepicker"
+import ca from 'date-fns/locale/ca'
+
+registerLocale('ca', ca)
 
 interface TimeSlotSelectorProps {
   onSelect: (timeSlot: string) => void
@@ -16,10 +21,10 @@ const TIME_SLOTS = [
 ]
 
 export function TimeSlotSelector({ onSelect }: TimeSlotSelectorProps) {
-  const [date, setDate] = useState<string>("")
+  const [date, setDate] = useState<Date | null>(null)
   const [selectedTime, setSelectedTime] = useState<string>("")
 
-  const handleDateSelect = (newDate: string) => {
+  const handleDateSelect = (newDate: Date | null) => {
     setDate(newDate)
     setSelectedTime("")
   }
@@ -27,29 +32,41 @@ export function TimeSlotSelector({ onSelect }: TimeSlotSelectorProps) {
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time)
     if (date) {
-      onSelect(`${date} ${time}`)
+      const dateStr = date.toISOString().split('T')[0]
+      onSelect(`${dateStr} ${time}`)
     }
   }
 
-  // Get today's date in YYYY-MM-DD format for min attribute
-  const today = new Date().toISOString().split('T')[0]
-  // Get date 30 days from now for max attribute
+  // Get min and max dates
+  const minDate = new Date()
   const maxDate = new Date()
   maxDate.setDate(maxDate.getDate() + 30)
-  const maxDateStr = maxDate.toISOString().split('T')[0]
 
   return (
     <div className="space-y-4">
       <div>
         <Label>Selecciona una data</Label>
-        <Input
-          type="date"
-          value={date}
-          min={today}
-          max={maxDateStr}
-          onChange={(e) => handleDateSelect(e.target.value)}
-          className="w-full mt-1"
-        />
+        <div className="mt-1.5">
+          <DatePicker
+            selected={date}
+            onChange={handleDateSelect}
+            minDate={minDate}
+            maxDate={maxDate}
+            locale="ca"
+            dateFormat="dd/MM/yyyy"
+            placeholderText="Selecciona una data"
+            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background 
+                     placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring 
+                     focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            showPopperArrow={false}
+            excludeDates={[]} // You can add excluded dates here
+            filterDate={(date) => {
+              // Disable weekends if needed
+              // return date.getDay() !== 0 && date.getDay() !== 6
+              return true
+            }}
+          />
+        </div>
       </div>
 
       {date && (
