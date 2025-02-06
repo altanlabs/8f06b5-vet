@@ -6,19 +6,68 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { ServiceAreaSelector } from './service-area-selector'
+import { ServiceSelector } from './service-selector'
+import { TimeSlotSelector } from './time-slot-selector'
+import { useDatabase } from '@altanlabs/database'
+import { toast } from 'sonner'
 
 export function BookingForm() {
   const [date, setDate] = useState<Date | undefined>(undefined)
-  const [bookingType, setBookingType] = useState('scheduled')
+  const [bookingType, setBookingType] = useState<'scheduled' | 'urgent'>('scheduled')
+  const [selectedAreaId, setSelectedAreaId] = useState<string>()
+  const [selectedServiceId, setSelectedServiceId] = useState<string>()
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>()
+  const [petName, setPetName] = useState('')
+  const [petType, setPetType] = useState('')
+  
+  const { addRecord } = useDatabase('appointments')
+  const { addRecord: addPet } = useDatabase('pets')
+  
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    try {
+      // First create the pet record
+      const petResponse = await addPet({
+        pet_name: petName,
+        species: petType
+      })
+      
+      // Then create the appointment
+      if (petResponse && date && selectedAreaId && selectedServiceId && selectedTimeSlot) {
+        await addRecord({
+          appointment_date: date.toISOString(),
+          service_type: bookingType,
+          service_area_id: [selectedAreaId],
+          service_id: [selectedServiceId],
+          pet_id: [petResponse.id],
+          status: 'Scheduled'
+        })
+        
+        toast.success('Appointment booked successfully!')
+        
+        // Reset form
+        setDate(undefined)
+        setSelectedAreaId(undefined)
+        setSelectedServiceId(undefined)
+        setSelectedTimeSlot(undefined)
+        setPetName('')
+        setPetType('')
+      }
+    } catch (error) {
+      toast.error('Failed to book appointment. Please try again.')
+    }
+  }
 
   return (
     <Card className="p-6 backdrop-blur-lg bg-white/30 dark:bg-slate-900/30 border-none shadow-lg">
-      <form className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-4">
           <Label>Service Type</Label>
           <RadioGroup
             defaultValue="scheduled"
-            onValueChange={setBookingType}
+            onValueChange={(value) => setBookingType(value as 'scheduled' | 'urgent')}
             className="flex flex-col space-y-2"
           >
             <div className="flex items-center space-x-2">
@@ -34,36 +83,25 @@ export function BookingForm() {
 
         <div className="space-y-4">
           <Label>Location</Label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Select your area" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="area1">Downtown</SelectItem>
-              <SelectItem value="area2">North Side</SelectItem>
-              <SelectItem value="area3">South Side</SelectItem>
-            </SelectContent>
-          </Select>
+          <ServiceAreaSelector 
+            onSelect={setSelectedAreaId} 
+            bookingType={bookingType}
+          />
         </div>
 
         <div className="space-y-4">
           <Label>Service</Label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Select service" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="checkup">Regular Check-up</SelectItem>
-              <SelectItem value="vaccination">Vaccination</SelectItem>
-              <SelectItem value="emergency">Emergency Care</SelectItem>
-            </SelectContent>
-          </Select>
+          <ServiceSelector onSelect={setSelectedServiceId} />
         </div>
 
         <div className="space-y-4">
           <Label>Pet Information</Label>
-          <Input placeholder="Pet's Name" />
-          <Select>
+          <Input 
+            placeholder="Pet's Name" 
+            value={petName}
+            onChange={(e) => setPetName(e.target.value)}
+          />
+          <Select onValueChange={setPetType}>
             <SelectTrigger>
               <SelectValue placeholder="Pet Type" />
             </SelectTrigger>
@@ -82,27 +120,24 @@ export function BookingForm() {
             selected={date}
             onSelect={setDate}
             className="rounded-md border"
+            disabled={(date) => date < new Date()}
           />
         </div>
 
         <div className="space-y-4">
           <Label>Available Time Slots</Label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Select time" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="9">9:00 AM</SelectItem>
-              <SelectItem value="10">10:00 AM</SelectItem>
-              <SelectItem value="11">11:00 AM</SelectItem>
-              <SelectItem value="14">2:00 PM</SelectItem>
-              <SelectItem value="15">3:00 PM</SelectItem>
-              <SelectItem value="16">4:00 PM</SelectItem>
-            </SelectContent>
-          </Select>
+          <TimeSlotSelector
+            onSelect={setSelectedTimeSlot}
+            selectedDate={date}
+            selectedAreaId={selectedAreaId}
+          />
         </div>
 
-        <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
+        <Button 
+          type="submit" 
+          className="w-full bg-blue-600 hover:bg-blue-700"
+          disabled={!date || !selectedAreaId || !selectedServiceId || !selectedTimeSlot || !petName || !petType}
+        >
           Book Appointment
         </Button>
       </form>
