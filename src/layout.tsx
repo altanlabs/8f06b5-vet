@@ -16,6 +16,7 @@ import { useEffect, useRef } from "react";
 interface NavItem {
   label: string;
   href: string;
+  section: string;
 }
 
 interface HeaderAction {
@@ -49,21 +50,19 @@ interface LayoutProps {
 }
 
 const DefaultNavigation: NavItem[] = [
-  { label: "Sobre nosaltres", href: "/about" },
-  { label: "Contacte", href: "/contact" },
-  { label: "Preus", href: "/pricing" },
+  { label: "Sobre mi", href: "#about", section: "about" },
+  { label: "Serveis", href: "#services", section: "services" },
+  { label: "Preus", href: "#pricing", section: "pricing" },
+  { label: "Contacte", href: "#contact", section: "contact" },
 ];
 
 const DefaultHeader: HeaderProps = {
   title: "Dra. Maria Serrat",
   navigation: DefaultNavigation,
-  showNotifications: true,
-  showUserMenu: true,
-  showThemeToggle: true,
-  userMenuItems: [
-    { icon: <Settings className="mr-2 h-4 w-4" />, label: "Configuració" },
-    { icon: <LogOut className="mr-2 h-4 w-4" />, label: "Sortir" },
-  ],
+  showNotifications: false,
+  showUserMenu: false,
+  showThemeToggle: false,
+  userMenuItems: [],
   avatarFallback: "MS",
 };
 
@@ -84,6 +83,20 @@ export default function Layout({
   const location = useLocation();
   const { theme, setTheme } = useTheme();
   const initialThemeSet = useRef(false);
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const headerOffset = 80; // Height of your fixed header
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
 
   useEffect(() => {
     if (initialThemeSet.current) return;
@@ -106,7 +119,7 @@ export default function Layout({
       <div className="flex flex-1 flex-col">
         {/* Configurable Header */}
         {header && showHeader && (
-          <header className="flex h-16 items-center justify-between border-b border-border px-6 bg-background">
+          <header className="fixed top-0 left-0 right-0 z-50 flex h-16 items-center justify-between border-b border-border px-6 bg-background/80 backdrop-blur-lg">
             <div className="flex items-center gap-8">
               {header.title && (
                 <Link to="/">
@@ -118,17 +131,14 @@ export default function Layout({
               {header.navigation && (
                 <nav className="flex items-center gap-6">
                   {header.navigation.map((item, index) => (
-                    <Link
+                    <button
                       key={index}
-                      to={item.href}
-                      className={`text-sm transition-colors hover:text-primary ${
-                        location.pathname === item.href
-                          ? "text-primary font-medium"
-                          : "text-muted-foreground"
-                      }`}
+                      onClick={() => scrollToSection(item.section)}
+                      className={`text-sm transition-colors hover:text-primary cursor-pointer
+                        ${location.hash === item.href ? "text-primary font-medium" : "text-muted-foreground"}`}
                     >
                       {item.label}
-                    </Link>
+                    </button>
                   ))}
                 </nav>
               )}
@@ -196,7 +206,7 @@ export default function Layout({
         )}
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-auto bg-background">
+        <main className="flex-1 overflow-auto bg-background pt-16">
           <Outlet />
         </main>
 
