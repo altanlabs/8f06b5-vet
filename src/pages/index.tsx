@@ -4,7 +4,6 @@ import { BookingForm } from "@/components/blocks/booking-form"
 import { Suspense } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { WhatsappLogo } from 'phosphor-react'
 
 function LoadingCard() {
   return (
@@ -101,9 +100,8 @@ export default function IndexPage() {
               </p>
               <Button 
                 onClick={handleWhatsAppClick}
-                className="bg-green-500 hover:bg-green-600 text-white flex items-center gap-2 mx-auto"
+                className="bg-green-500 hover:bg-green-600 text-white mx-auto"
               >
-                <WhatsappLogo size={24} weight="fill" />
                 Contacta per WhatsApp
               </Button>
             </div>
