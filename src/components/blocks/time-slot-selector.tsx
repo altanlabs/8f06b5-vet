@@ -2,14 +2,8 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Card } from "@/components/ui/card"
-import { format } from "date-fns"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
-import { CalendarIcon } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 interface TimeSlotSelectorProps {
   onSelect: (timeSlot: string) => void
@@ -24,52 +18,48 @@ const TIME_SLOTS = [
   "17:00", "17:30", "18:00", "18:30", "19:00", "19:30"
 ]
 
-export function TimeSlotSelector({ onSelect, selectedDate }: TimeSlotSelectorProps) {
-  const [date, setDate] = useState<Date | undefined>(selectedDate)
-  const [selectedTime, setSelectedTime] = useState<string>()
+export function TimeSlotSelector({ onSelect }: TimeSlotSelectorProps) {
+  const [date, setDate] = useState<string>("")
+  const [selectedTime, setSelectedTime] = useState<string>("")
 
-  const handleDateSelect = (newDate: Date | undefined) => {
+  const handleDateSelect = (newDate: string) => {
     setDate(newDate)
-    setSelectedTime(undefined)
+    setSelectedTime("")
   }
 
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time)
     if (date) {
-      const dateString = date.toISOString().split('T')[0]
-      onSelect(`${dateString} ${time}`)
+      onSelect(`${date} ${time}`)
     }
   }
 
+  // Get today's date in YYYY-MM-DD format for min attribute
+  const today = new Date().toISOString().split('T')[0]
+  // Get date 30 days from now for max attribute
+  const maxDate = new Date()
+  maxDate.setDate(maxDate.getDate() + 30)
+  const maxDateStr = maxDate.toISOString().split('T')[0]
+
   return (
     <div className="space-y-4">
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant={"outline"}
-            className={cn(
-              "w-full justify-start text-left font-normal",
-              !date && "text-muted-foreground"
-            )}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {date ? format(date, "PPP") : <span>Selecciona una data</span>}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <input
-            type="date"
-            className="w-full p-2 border rounded-md"
-            min={new Date().toISOString().split('T')[0]}
-            max={new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
-            onChange={(e) => handleDateSelect(e.target.value ? new Date(e.target.value) : undefined)}
-          />
-        </PopoverContent>
-      </Popover>
+      <div>
+        <Label htmlFor="date-select">Selecciona una data</Label>
+        <Input
+          id="date-select"
+          type="date"
+          value={date}
+          min={today}
+          max={maxDateStr}
+          onChange={(e) => handleDateSelect(e.target.value)}
+          className="w-full mt-1"
+        />
+      </div>
 
       {date && (
         <Card className="p-4">
-          <ScrollArea className="h-[200px] pr-4">
+          <Label>Selecciona una hora</Label>
+          <ScrollArea className="h-[200px] mt-2">
             <div className="grid grid-cols-3 gap-2">
               {TIME_SLOTS.map((time) => (
                 <Button
