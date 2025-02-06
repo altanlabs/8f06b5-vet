@@ -35,9 +35,6 @@ const formSchema = z.object({
 })
 
 export function BookingForm() {
-  const [selectedDate, setSelectedDate] = useState<Date>();
-  const [selectedService, setSelectedService] = useState<string>();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -60,12 +57,9 @@ export function BookingForm() {
     
     // Reset form
     form.reset()
-    setSelectedDate(undefined)
-    setSelectedService(undefined)
   }
 
   const handleServiceSelect = (serviceId: string) => {
-    setSelectedService(serviceId);
     form.setValue("serviceId", serviceId);
   };
 
@@ -135,11 +129,7 @@ export function BookingForm() {
             <FormItem>
               <FormLabel>Hora</FormLabel>
               <FormControl>
-                <TimeSlotSelector 
-                  onSelect={handleTimeSelect}
-                  selectedDate={selectedDate}
-                  selectedAreaId={selectedService}
-                />
+                <TimeSlotSelector onSelect={handleTimeSelect} />
               </FormControl>
               <FormMessage />
             </FormItem>
