@@ -45,6 +45,7 @@ const formSchema = z.object({
 export function BookingForm() {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [formData, setFormData] = useState<z.infer<typeof formSchema> | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,11 +63,32 @@ export function BookingForm() {
     setShowConfirmDialog(true)
   }
 
-  function handleConfirmBooking() {
-    if (formData) {
-      // Here you would send the form data to your backend
-      console.log(formData)
-      
+  async function handleConfirmBooking() {
+    if (!formData || isSubmitting) return
+
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch('https://api.altan.ai/galaxia/hook/mSXDoZ/appointments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          client_name: formData.name,
+          client_email: formData.email,
+          client_phone: formData.phone,
+          service_id: formData.serviceId,
+          appointment_datetime: formData.timeSlot,
+          status: 'confirmed',
+          notes: ''
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Error al guardar la cita')
+      }
+
       // Show success message
       toast.success("Cita reservada correctament!", {
         description: "T'enviarem un email amb la confirmació.",
@@ -76,6 +98,12 @@ export function BookingForm() {
       form.reset()
       setShowConfirmDialog(false)
       setFormData(null)
+    } catch (error) {
+      toast.error("Error al reservar la cita", {
+        description: "Si us plau, intenta-ho de nou més tard.",
+      })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -182,8 +210,11 @@ export function BookingForm() {
             <Button variant="outline" onClick={() => setShowConfirmDialog(false)}>
               Cancel·lar
             </Button>
-            <Button onClick={handleConfirmBooking}>
-              Reservar Cita
+            <Button 
+              onClick={handleConfirmBooking}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Reservant..." : "Reservar Cita"}
             </Button>
           </DialogFooter>
         </DialogContent>
