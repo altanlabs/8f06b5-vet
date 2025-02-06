@@ -8,7 +8,7 @@ interface ServiceAreaSelectorProps {
 }
 
 export function ServiceAreaSelector({ onSelect, bookingType }: ServiceAreaSelectorProps) {
-  const { records, isLoading, refresh } = useDatabase("service_areas", {
+  const { records = [], isLoading, refresh } = useDatabase("service_areas", {
     sort: [{ field: "name", direction: "asc" }]
   });
 
@@ -17,30 +17,20 @@ export function ServiceAreaSelector({ onSelect, bookingType }: ServiceAreaSelect
   }, []);
 
   const filteredAreas = bookingType === "scheduled" 
-    ? records.filter(area => area.fields.travel_fee === 0)
+    ? records?.filter(area => area.fields?.travel_fee === 0)
     : records;
 
-  if (isLoading) {
-    return (
-      <Select>
-        <SelectTrigger>
-          <SelectValue placeholder="Loading areas..." />
-        </SelectTrigger>
-      </Select>
-    );
-  }
-
   return (
-    <Select onValueChange={onSelect}>
+    <Select onValueChange={onSelect} disabled={isLoading}>
       <SelectTrigger>
-        <SelectValue placeholder="Select your area" />
+        <SelectValue placeholder={isLoading ? "Loading areas..." : "Select your area"} />
       </SelectTrigger>
       <SelectContent>
-        {filteredAreas.map((area) => (
+        {filteredAreas?.map((area) => (
           <SelectItem key={area.id} value={area.id}>
-            {area.fields.name}
-            {bookingType === "urgent" && area.fields.travel_fee > 0 && 
-              ` (+$${area.fields.travel_fee} travel fee)`}
+            {area.fields?.name}
+            {bookingType === "urgent" && area.fields?.travel_fee > 0 && 
+              ` (+$${area.fields?.travel_fee} travel fee)`}
           </SelectItem>
         ))}
       </SelectContent>
