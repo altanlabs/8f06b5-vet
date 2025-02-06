@@ -4,6 +4,7 @@ import { BookingForm } from "@/components/blocks/booking-form"
 import { Suspense } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 function LoadingCard() {
   return (
@@ -19,6 +20,24 @@ function LoadingCard() {
     </Card>
   )
 }
+
+const EQUINE_SERVICES = [
+  { name: "Medicina General Equina", price: 80, description: "Examen complet i diagnòstic general" },
+  { name: "Medicina Esportiva Equina", price: 120, description: "Avaluació i tractament per a cavalls esportius" },
+  { name: "Odontologia Equina", price: 90, description: "Cura dental completa i manteniment" },
+  { name: "Reproducció Equina", price: 150, description: "Serveis reproductius i obstetrícia" },
+  { name: "Cirurgia Equina", price: 500, description: "Procediments quirúrgics especialitzats" },
+  { name: "Rehabilitació Equina", price: 100, description: "Teràpia i recuperació post-lesió" },
+  { name: "Medicina Preventiva Equina", price: 70, description: "Vacunacions i controls preventius" },
+];
+
+const OTHER_SERVICES = [
+  { name: "Medicina General", price: 50, description: "Consulta i examen general" },
+  { name: "Cirurgia General", price: 200, description: "Procediments quirúrgics estàndard" },
+  { name: "Odontologia", price: 80, description: "Tractaments dentals complets" },
+  { name: "Medicina Preventiva", price: 45, description: "Vacunacions i controls rutinaris" },
+  { name: "Urgències", price: 120, description: "Atenció immediata per a casos urgents" },
+];
 
 export default function IndexPage() {
   const handleWhatsAppClick = () => {
@@ -70,34 +89,59 @@ export default function IndexPage() {
           </div>
         </motion.section>
 
-        {/* Specialties Section */}
+        {/* Pricing Section */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-center max-w-4xl mx-auto"
+          className="max-w-4xl mx-auto"
         >
-          <h2 className="text-2xl font-bold mb-6 text-primary">Serveis Especialitzats</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-4 rounded-lg bg-secondary/10 border border-border">
-              <h3 className="font-semibold text-primary mb-2">Medicina Equina</h3>
-              <ul className="text-muted-foreground space-y-2">
-                <li>Diagnòstic i tractament de coixeses</li>
-                <li>Medicina esportiva equina</li>
-                <li>Cures preventives</li>
-                <li>Tractaments dentals</li>
-              </ul>
-            </div>
-            <div className="p-4 rounded-lg bg-secondary/10 border border-border">
-              <h3 className="font-semibold text-primary mb-2">Cirurgia</h3>
-              <ul className="text-muted-foreground space-y-2">
-                <li>Cirurgia general i ortopèdica</li>
-                <li>Cirurgia de teixits tous</li>
-                <li>Cirurgia d'emergència</li>
-                <li>Procediments mínimament invasius</li>
-              </ul>
-            </div>
-          </div>
+          <h2 className="text-2xl font-bold text-center mb-8 text-primary">Serveis i Tarifes</h2>
+          <Tabs defaultValue="equine" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-8">
+              <TabsTrigger value="equine">Serveis Equins</TabsTrigger>
+              <TabsTrigger value="other">Altres Animals</TabsTrigger>
+            </TabsList>
+            <TabsContent value="equine">
+              <div className="grid gap-4">
+                {EQUINE_SERVICES.map((service, index) => (
+                  <div 
+                    key={index}
+                    className="p-4 rounded-lg bg-secondary/10 border border-border flex justify-between items-center hover:bg-secondary/20 transition-colors"
+                  >
+                    <div>
+                      <h3 className="font-semibold text-primary">{service.name}</h3>
+                      <p className="text-sm text-muted-foreground">{service.description}</p>
+                    </div>
+                    <div className="text-xl font-bold text-primary whitespace-nowrap ml-4">
+                      {service.price}€
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </TabsContent>
+            <TabsContent value="other">
+              <div className="grid gap-4">
+                {OTHER_SERVICES.map((service, index) => (
+                  <div 
+                    key={index}
+                    className="p-4 rounded-lg bg-secondary/10 border border-border flex justify-between items-center hover:bg-secondary/20 transition-colors"
+                  >
+                    <div>
+                      <h3 className="font-semibold text-primary">{service.name}</h3>
+                      <p className="text-sm text-muted-foreground">{service.description}</p>
+                    </div>
+                    <div className="text-xl font-bold text-primary whitespace-nowrap ml-4">
+                      {service.price}€
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
+          <p className="text-sm text-muted-foreground text-center mt-4">
+            * Els preus poden variar segons la complexitat del cas. Consulta per a casos específics.
+          </p>
         </motion.section>
 
         {/* Booking Form Section */}
